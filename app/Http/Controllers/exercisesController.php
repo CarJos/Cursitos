@@ -15,7 +15,9 @@ class exercisesController extends Controller
      */
     public function index()
     {
-        return view('excercises.index');
+        $curso = Curso::all();
+        
+        return view('excercises.index', compact('curso'));
     }
 
     /**
@@ -39,6 +41,9 @@ class exercisesController extends Controller
         $curso = new Curso();
         $curso->nombre = $request->input('nombre');
         $curso->descripcion = $request->input('descripcion');
+        if ($request->hasFile('imagen')) {
+            $curso->imagen = $request->file('imagen')->store('public/cursos');       
+        }
         $curso->save();
         return 'Curso creado exitosamente';
     }
